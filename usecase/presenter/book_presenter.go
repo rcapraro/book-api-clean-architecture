@@ -2,9 +2,9 @@ package presenter
 
 import (
 	"book-api/model"
-	"book-api/usecase/interactor"
+	"book-api/usecase/output"
 )
 
 type BookPresenter interface {
-	PresentBooks(b []*model.Book) []*interactor.BookOutput
+	PresentBooks(b []*model.Book) []*output.BookOutput
 }

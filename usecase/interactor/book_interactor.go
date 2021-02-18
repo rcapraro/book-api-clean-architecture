@@ -2,17 +2,19 @@ package interactor
 
 import (
 	"book-api/model"
+	"book-api/usecase/output"
 	"book-api/usecase/presenter"
 	"book-api/usecase/repository"
 )
 
 type bookInteractor struct {
 	BookRepository repository.BookRepository
-	BookPresenter presenter.BookPresenter
+	BookPresenter  presenter.BookPresenter
 }
 
 type BookInteractor interface {
-	Get(b []*model.Book) ([]*BookOutput, error)
+	Get(b []*model.Book) ([]*output.BookOutput, error)
+	Create(b *model.Book) error
 }
 
 func NewBookInteractor(r repository.BookRepository, p presenter.BookPresenter) BookInteractor {
@@ -22,7 +24,7 @@ func NewBookInteractor(r repository.BookRepository, p presenter.BookPresenter) B
 	}
 }
 
-func (bi *bookInteractor) Get(b []*model.Book) ([]*BookOutput, error) {
+func (bi *bookInteractor) Get(b []*model.Book) ([]*output.BookOutput, error) {
 	b, err := bi.BookRepository.FindAll(b)
 	if err != nil {
 		return nil, err
@@ -30,5 +32,7 @@ func (bi *bookInteractor) Get(b []*model.Book) ([]*BookOutput, error) {
 	return bi.BookPresenter.PresentBooks(b), nil
 }
 
-
-
+func (bi *bookInteractor) Create(b *model.Book) error {
+	err := bi.BookRepository.Save(b)
+	return err
+}
