@@ -18,9 +18,9 @@ func NewBookRepository(db *badger.DB) repository.BookRepository {
 }
 
 func (br bookRepository) FindAll(b []*model.Book) ([]*model.Book, error) {
-	
+
 	var books []*model.Book
-	
+
 	err := br.db.View(func(txn *badger.Txn) error {
 		opts := badger.DefaultIteratorOptions
 		opts.PrefetchSize = 10
@@ -65,5 +65,3 @@ func getBookEntry(item *badger.Item) (*model.Book, error) {
 
 	return bookEntry, err
 }
-
-

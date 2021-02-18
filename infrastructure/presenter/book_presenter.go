@@ -2,7 +2,7 @@ package presenter
 
 import (
 	"book-api/model"
-	"book-api/usecase/interactor"
+	"book-api/usecase/output"
 	"book-api/usecase/presenter"
 	"strconv"
 	"strings"
@@ -15,11 +15,11 @@ func NewBookPresenter() presenter.BookPresenter {
 	return &bookPresenter{}
 }
 
-func (u bookPresenter) PresentBooks(b []*model.Book) []*interactor.BookOutput {
+func (u bookPresenter) PresentBooks(b []*model.Book) []*output.BookOutput {
 
-	var bookOutputs []*interactor.BookOutput
+	var bookOutputs []*output.BookOutput
 	for _, book := range b {
-		bookOutputs = append(bookOutputs, &interactor.BookOutput{
+		bookOutputs = append(bookOutputs, &output.BookOutput{
 			ISBN:      strconv.FormatUint(uint64(book.ISBN), 10),
 			Title:     book.Title,
 			Authors:   strings.Join(book.Authors, ", "),

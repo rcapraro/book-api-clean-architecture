@@ -1,6 +1,8 @@
 package controller
 
+import "github.com/gofiber/fiber/v2"
+
 type HttpContext interface {
-	JSON(code int, i interface{}) error
-	Bind(i interface{}) error
+	Status(status int) *fiber.Ctx
+	JSON(i interface{}) error
 }

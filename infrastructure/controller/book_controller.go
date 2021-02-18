@@ -3,6 +3,7 @@ package controller
 import (
 	"book-api/model"
 	"book-api/usecase/interactor"
+	"book-api/usecase/output"
 	"net/http"
 )
 
@@ -20,10 +21,10 @@ func NewBookController(bi interactor.BookInteractor) BookController {
 
 func (bc *bookController) GetBooks(c HttpContext) error {
 	var b []*model.Book
-	var bo []*interactor.BookOutput
+	var bo []*output.BookOutput
 	bo, err := bc.bookInteractor.Get(b)
 	if err != nil {
 		return err
 	}
-	return c.JSON(http.StatusOK, bo)
+	return c.Status(http.StatusOK).JSON(bo)
 }
