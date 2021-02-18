@@ -14,6 +14,7 @@ type bookInteractor struct {
 
 type BookInteractor interface {
 	Get(b []*model.Book) ([]*output.BookOutput, error)
+	Create(b *model.Book) error
 }
 
 func NewBookInteractor(r repository.BookRepository, p presenter.BookPresenter) BookInteractor {
@@ -29,4 +30,9 @@ func (bi *bookInteractor) Get(b []*model.Book) ([]*output.BookOutput, error) {
 		return nil, err
 	}
 	return bi.BookPresenter.PresentBooks(b), nil
+}
+
+func (bi *bookInteractor) Create(b *model.Book) error {
+	err := bi.BookRepository.Save(b)
+	return err
 }

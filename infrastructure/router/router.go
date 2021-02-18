@@ -6,11 +6,15 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func NewRouter(app *fiber.App, c controller.AppController) *fiber.App {
+func NewRouter(app *fiber.App, c controller.BookController) *fiber.App {
 	app.Use(logger.New())
 
 	app.Get("/books", func(ctx *fiber.Ctx) error {
 		return c.GetBooks(ctx)
+	})
+
+	app.Post("/books", func(ctx *fiber.Ctx) error {
+		return ctx.SendString("Book created")
 	})
 
 	return app

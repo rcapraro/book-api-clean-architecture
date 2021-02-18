@@ -17,7 +17,7 @@ func NewBookRepository(db *badger.DB) repository.BookRepository {
 	return &bookRepository{db}
 }
 
-func (br bookRepository) FindAll(b []*model.Book) ([]*model.Book, error) {
+func (br *bookRepository) FindAll(b []*model.Book) ([]*model.Book, error) {
 
 	var books []*model.Book
 
@@ -38,7 +38,7 @@ func (br bookRepository) FindAll(b []*model.Book) ([]*model.Book, error) {
 	return books, err
 }
 
-func (br bookRepository) Save(b *model.Book) error {
+func (br *bookRepository) Save(b *model.Book) error {
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 	err := encoder.Encode(b)

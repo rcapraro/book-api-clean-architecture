@@ -15,7 +15,7 @@ func NewBookPresenter() presenter.BookPresenter {
 	return &bookPresenter{}
 }
 
-func (u bookPresenter) PresentBooks(b []*model.Book) []*output.BookOutput {
+func (u *bookPresenter) PresentBooks(b []*model.Book) []*output.BookOutput {
 
 	var bookOutputs []*output.BookOutput
 	for _, book := range b {
