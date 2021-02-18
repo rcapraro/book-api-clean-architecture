@@ -1,9 +1,9 @@
 package model
 
 type Book struct {
-	ISBN      uint
+	ISBN      int
 	Title     string
 	Authors   []string
-	Year      uint8
+	Year      int
 	Publisher string
 }

@@ -47,12 +47,12 @@ func (br *bookRepository) Save(b *model.Book) error {
 	}
 
 	return br.db.Update(func(txn *badger.Txn) error {
-		return txn.Set([]byte(strconv.FormatInt(int64(b.ISBN), 10)), buffer.Bytes())
+		return txn.Set([]byte(strconv.Itoa(b.ISBN)), buffer.Bytes())
 	})
 }
 
 func getBookEntry(item *badger.Item) (*model.Book, error) {
-	var bookEntry *model.Book
+	var bookEntry model.Book
 	var buffer bytes.Buffer
 
 	err := item.Value(func(val []byte) error {
@@ -61,7 +61,7 @@ func getBookEntry(item *badger.Item) (*model.Book, error) {
 	})
 
 	decoder := gob.NewDecoder(&buffer)
-	err = decoder.Decode(bookEntry)
+	err = decoder.Decode(&bookEntry)
 
-	return bookEntry, err
+	return &bookEntry, err
 }
