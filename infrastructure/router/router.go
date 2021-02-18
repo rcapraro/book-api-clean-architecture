@@ -14,7 +14,7 @@ func NewRouter(app *fiber.App, c controller.BookController) *fiber.App {
 	})
 
 	app.Post("/books", func(ctx *fiber.Ctx) error {
-		return ctx.SendString("Book created")
+		return c.CreateBook(ctx)
 	})
 
 	return app
