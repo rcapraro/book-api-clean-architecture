@@ -11,14 +11,14 @@ import (
 type bookPresenter struct {
 }
 
-func NewUserPresenter() presenter.BookPresenter {
+func NewBookPresenter() presenter.BookPresenter {
 	return &bookPresenter{}
 }
 
 func (u bookPresenter) PresentBooks(b []*model.Book) []*interactor.BookOutput {
 
 	var bookOutputs []*interactor.BookOutput
-	for _,book := range b {
+	for _, book := range b {
 		bookOutputs = append(bookOutputs, &interactor.BookOutput{
 			ISBN:      strconv.FormatUint(uint64(book.ISBN), 10),
 			Title:     book.Title,
@@ -29,4 +29,3 @@ func (u bookPresenter) PresentBooks(b []*model.Book) []*interactor.BookOutput {
 	}
 	return bookOutputs
 }
-

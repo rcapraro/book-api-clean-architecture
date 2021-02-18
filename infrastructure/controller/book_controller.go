@@ -14,7 +14,7 @@ type BookController interface {
 	GetBooks(c HttpContext) error
 }
 
-func NewUserController(bi interactor.BookInteractor) BookController {
+func NewBookController(bi interactor.BookInteractor) BookController {
 	return &bookController{bi}
 }
 
@@ -27,4 +27,3 @@ func (bc *bookController) GetBooks(c HttpContext) error {
 	}
 	return c.JSON(http.StatusOK, bo)
 }
-
