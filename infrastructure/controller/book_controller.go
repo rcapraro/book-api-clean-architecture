@@ -4,8 +4,10 @@ import (
 	"book-api/usecase/input"
 	"book-api/usecase/interactor"
 	"book-api/usecase/output"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
+	"strings"
 )
 
 type bookController struct {
@@ -37,7 +39,12 @@ func (bc *bookController) CreateBook(c *fiber.Ctx) error {
 	}
 	validationErrors := b.Validate()
 	if len(validationErrors) > 0 {
-		return c.Status(http.StatusBadRequest).JSON(nil)
+		errorMessages := make([]string, len(validationErrors))
+		for i, validationError := range validationErrors {
+			errorMessages[i] = fmt.Sprintf("%s is invalid", validationError.Field())
+		}
+
+		return c.Status(http.StatusBadRequest).SendString(strings.Join(errorMessages, "\n"))
 	}
 	if err := bc.bookInteractor.Create(b); err != nil {
 		return err

@@ -8,16 +8,20 @@ import (
 var validate *validator.Validate
 
 type BookInput struct {
-	ISBN      string   `validate:"isbn"`
-	Title     string   `validate:"required"`
-	Authors   []string `validate:"min=1"`
-	Year      int      `validate:"min=-1000,max=2100"`
-	Publisher string
+	ISBN      string   `json:"isbn" validate:"isbn"`
+	Title     string   `json:"title" validate:"required"`
+	Authors   []string `json:"authors" validate:"min=1"`
+	Year      int      `json:"year" validate:"min=-1000,max=2100"`
+	Publisher string   `json:"publisher"`
 }
 
 func (b *BookInput) Validate() validator.ValidationErrors {
+	validate = validator.New()
 	err := validate.Struct(b)
-	return err.(validator.ValidationErrors)
+	if err != nil {
+		return err.(validator.ValidationErrors)
+	}
+	return nil
 }
 
 func (b *BookInput) ToModel() *model.Book {
