@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"github.com/dgraph-io/badger/v3"
-	"strconv"
 )
 
 type bookRepository struct {
@@ -17,7 +16,7 @@ func NewBookRepository(db *badger.DB) repository.BookRepository {
 	return &bookRepository{db}
 }
 
-func (br *bookRepository) FindAll(b []*model.Book) ([]*model.Book, error) {
+func (br *bookRepository) FindAll() ([]*model.Book, error) {
 
 	var books []*model.Book
 
@@ -47,7 +46,7 @@ func (br *bookRepository) Save(b *model.Book) error {
 	}
 
 	return br.db.Update(func(txn *badger.Txn) error {
-		return txn.Set([]byte(strconv.Itoa(b.ISBN)), buffer.Bytes())
+		return txn.Set([]byte(b.ISBN), buffer.Bytes())
 	})
 }
 

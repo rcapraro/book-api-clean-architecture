@@ -11,7 +11,12 @@ import (
 func main() {
 
 	db := repository.NewDB("./books")
-	defer db.Close()
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			log.Fatal("Error closing DB")
+		}
+	}()
 
 	r := registry.NewRegistry(db)
 

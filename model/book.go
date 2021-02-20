@@ -1,7 +1,7 @@
 package model
 
 type Book struct {
-	ISBN      int
+	ISBN      string
 	Title     string
 	Authors   []string
 	Year      int

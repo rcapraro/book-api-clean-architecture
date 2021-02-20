@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"book-api/model"
+	"book-api/usecase/input"
 	"book-api/usecase/interactor"
 	"book-api/usecase/output"
 	"github.com/gofiber/fiber/v2"
@@ -22,9 +22,8 @@ func NewBookController(bi interactor.BookInteractor) BookController {
 }
 
 func (bc *bookController) GetBooks(c *fiber.Ctx) error {
-	var b []*model.Book
 	var bo []*output.BookOutput
-	bo, err := bc.bookInteractor.Get(b)
+	bo, err := bc.bookInteractor.FindAll()
 	if err != nil {
 		return err
 	}
@@ -32,9 +31,13 @@ func (bc *bookController) GetBooks(c *fiber.Ctx) error {
 }
 
 func (bc *bookController) CreateBook(c *fiber.Ctx) error {
-	b := &model.Book{}
+	b := &input.BookInput{}
 	if err := c.BodyParser(b); err != nil {
 		return err
+	}
+	validationErrors := b.Validate()
+	if len(validationErrors) > 0 {
+		return c.Status(http.StatusBadRequest).JSON(nil)
 	}
 	if err := bc.bookInteractor.Create(b); err != nil {
 		return err

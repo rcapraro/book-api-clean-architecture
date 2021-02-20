@@ -1,7 +1,7 @@
 package interactor
 
 import (
-	"book-api/model"
+	"book-api/usecase/input"
 	"book-api/usecase/output"
 	"book-api/usecase/presenter"
 	"book-api/usecase/repository"
@@ -13,8 +13,8 @@ type bookInteractor struct {
 }
 
 type BookInteractor interface {
-	Get(b []*model.Book) ([]*output.BookOutput, error)
-	Create(b *model.Book) error
+	FindAll() ([]*output.BookOutput, error)
+	Create(b *input.BookInput) error
 }
 
 func NewBookInteractor(r repository.BookRepository, p presenter.BookPresenter) BookInteractor {
@@ -24,15 +24,15 @@ func NewBookInteractor(r repository.BookRepository, p presenter.BookPresenter) B
 	}
 }
 
-func (bi *bookInteractor) Get(b []*model.Book) ([]*output.BookOutput, error) {
-	b, err := bi.BookRepository.FindAll(b)
+func (bi *bookInteractor) FindAll() ([]*output.BookOutput, error) {
+	b, err := bi.BookRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}
 	return bi.BookPresenter.PresentBooks(b), nil
 }
 
-func (bi *bookInteractor) Create(b *model.Book) error {
-	err := bi.BookRepository.Save(b)
+func (bi *bookInteractor) Create(b *input.BookInput) error {
+	err := bi.BookRepository.Save(b.ToModel())
 	return err
 }
