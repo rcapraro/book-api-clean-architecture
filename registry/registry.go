@@ -5,7 +5,6 @@ import (
 	ip "book-api/infrastructure/presenter"
 	ir "book-api/infrastructure/repository"
 	"book-api/usecase/interactor"
-	"book-api/usecase/presenter"
 	"github.com/dgraph-io/badger/v3"
 )
 
@@ -26,9 +25,5 @@ func (r *registry) NewBookController() controller.BookController {
 }
 
 func (r *registry) NewBookInteractor() interactor.BookInteractor {
-	return interactor.NewBookInteractor(ir.NewBookRepository(r.db), r.NewBookPresenter())
-}
-
-func (r *registry) NewBookPresenter() presenter.BookPresenter {
-	return ip.NewBookPresenter()
+	return interactor.NewBookInteractor(ir.NewBookRepository(r.db), ip.NewBookPresenter())
 }
